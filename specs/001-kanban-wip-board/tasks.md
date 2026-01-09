@@ -24,14 +24,14 @@ description: "Task list for Kanban TODO Board with WIP Limits feature"
 
 **Purpose**: Project initialization and structure creation
 
-- [ ] T001 Create project directory structure per plan.md (src/, tests/, .config/, public/, docs/)
-- [ ] T002 [P] Initialize npm project with package.json and install core dev dependencies (vitest, @vitest/ui, playwright, prettier, eslint)
-- [ ] T003 [P] Create npm scripts for test, test:watch, test:e2e, dev, format, lint in package.json
-- [ ] T004 [P] Configure Vitest in .config/vitest.config.js with jsdom environment
-- [ ] T005 [P] Configure Playwright in .config/playwright.config.js for Chrome, Firefox, Safari
-- [ ] T006 Create prettier configuration (.prettierrc) with default formatting rules
-- [ ] T007 Create ESLint configuration (.eslintrc.js) with ES2020+ environment
-- [ ] T008 Create HTML entry point in public/index.html with meta tags, CSS links, script module tag
+- [x] T001 Create project directory structure per plan.md (src/, tests/, .config/, public/, docs/)
+- [x] T002 [P] Initialize npm project with package.json and install core dev dependencies (vitest, @vitest/ui, playwright, prettier, eslint)
+- [x] T003 [P] Create npm scripts for test, test:watch, test:e2e, dev, format, lint in package.json
+- [x] T004 [P] Configure Vitest in .config/vitest.config.js with jsdom environment
+- [x] T005 [P] Configure Playwright in .config/playwright.config.js for Chrome, Firefox, Safari
+- [x] T006 Create prettier configuration (.prettierrc) with default formatting rules
+- [x] T007 Create ESLint configuration (.eslintrc.js) with ES2020+ environment
+- [x] T008 Create HTML entry point in public/index.html with meta tags, CSS links, script module tag
 
 ---
 
