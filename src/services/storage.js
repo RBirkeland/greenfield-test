@@ -12,12 +12,12 @@ export class Storage {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        return DEFAULT_BOARD_STATE;
+        return JSON.parse(JSON.stringify(DEFAULT_BOARD_STATE));
       }
       return JSON.parse(stored);
     } catch (error) {
       console.error('Failed to load board state from storage:', error);
-      return DEFAULT_BOARD_STATE;
+      return JSON.parse(JSON.stringify(DEFAULT_BOARD_STATE));
     }
   }
 
