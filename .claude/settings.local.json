@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.specify/scripts/bash/create-new-feature.sh:*)",
+      "Skill(commit-commands:commit)",
+      "Bash(.specify/scripts/bash/setup-plan.sh:*)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh:*)",
+      "Bash(git fetch:*)",
+      "mcp__vibe_kanban__list_projects",
+      "mcp__vibe_kanban__create_task",
+      "Bash(git push:*)",
+      "Bash(gh repo create:*)",
+      "Bash(npm install:*)",
+      "Bash(npm test:*)"
+    ]
+  },
+  "enabledPlugins": {
+    "commit-commands@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true
+  }
+}
