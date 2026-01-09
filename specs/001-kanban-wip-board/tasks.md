@@ -43,27 +43,27 @@ description: "Task list for Kanban TODO Board with WIP Limits feature"
 
 ### Utility Foundations
 
-- [ ] T009 [P] Implement UUID generator in src/utils/uuid.js (or use npm uuid package)
-- [ ] T010 [P] Implement DOM helpers in src/utils/dom.js (query, create, addEventListener, remove helpers)
-- [ ] T011 [P] Implement input validators in src/utils/validators.js (non-empty string, max length, trim)
+- [x] T009 [P] Implement UUID generator in src/utils/uuid.js (or use npm uuid package)
+- [x] T010 [P] Implement DOM helpers in src/utils/dom.js (query, create, addEventListener, remove helpers)
+- [x] T011 [P] Implement input validators in src/utils/validators.js (non-empty string, max length, trim)
 
 ### Storage Layer (Blocking for all stories)
 
-- [ ] T012 Unit test: Storage.load() returns default board state on first launch (tests/unit/test-storage.js)
-- [ ] T013 Unit test: Storage.save() persists board state to LocalStorage (tests/unit/test-storage.js)
-- [ ] T014 Unit test: Storage handles corrupted JSON gracefully with error (tests/unit/test-storage.js)
-- [ ] T015 Implement Storage service in src/services/storage.js:
+- [x] T012 Unit test: Storage.load() returns default board state on first launch (tests/unit/test-storage.js)
+- [x] T013 Unit test: Storage.save() persists board state to LocalStorage (tests/unit/test-storage.js)
+- [x] T014 Unit test: Storage handles corrupted JSON gracefully with error (tests/unit/test-storage.js)
+- [x] T015 Implement Storage service in src/services/storage.js:
   - load(): Returns board state from LocalStorage or default empty state
   - save(boardState): Persists to LocalStorage with key "kanban-board-v1"
   - Version tracking for future migrations
 
 ### Business Logic Layer (Blocking for all stories)
 
-- [ ] T016 [P] Unit test: TodoManager.addTodo() creates TODO with correct defaults (tests/unit/test-todo-manager.js)
-- [ ] T017 [P] Unit test: TodoManager.addTodo() rejects empty/whitespace-only titles (tests/unit/test-todo-manager.js)
-- [ ] T018 [P] Unit test: TodoManager.getBoard() returns current state (tests/unit/test-todo-manager.js)
-- [ ] T019 Unit test: TodoManager.moveTodo() changes TODO status correctly (tests/unit/test-todo-manager.js)
-- [ ] T020 Implement TodoManager service in src/services/todo-manager.js:
+- [x] T016 [P] Unit test: TodoManager.addTodo() creates TODO with correct defaults (tests/unit/test-todo-manager.js)
+- [x] T017 [P] Unit test: TodoManager.addTodo() rejects empty/whitespace-only titles (tests/unit/test-todo-manager.js)
+- [x] T018 [P] Unit test: TodoManager.getBoard() returns current state (tests/unit/test-todo-manager.js)
+- [x] T019 Unit test: TodoManager.moveTodo() changes TODO status correctly (tests/unit/test-todo-manager.js)
+- [x] T020 Implement TodoManager service in src/services/todo-manager.js:
   - addTodo(title, description): Create TODO with UUID, timestamp, position=0
   - getBoard(): Return current board state
   - moveTodo(todoId, newStatus): Move TODO and recompute positions (WIP limit check in separate service)
@@ -75,20 +75,20 @@ description: "Task list for Kanban TODO Board with WIP Limits feature"
 
 ### WIP Enforcement Layer (Blocking for US2)
 
-- [ ] T021 [P] Unit test: WIPEnforcer.canMoveToInProgress() returns true if count < limit (tests/unit/test-wip-enforcer.js)
-- [ ] T022 [P] Unit test: WIPEnforcer.canMoveToInProgress() returns false if count >= limit (tests/unit/test-wip-enforcer.js)
-- [ ] T023 Unit test: WIPEnforcer.getWIPStatus() returns count and limit (tests/unit/test-wip-enforcer.js)
-- [ ] T024 Implement WIPEnforcer service in src/services/wip-enforcer.js:
+- [x] T021 [P] Unit test: WIPEnforcer.canMoveToInProgress() returns true if count < limit (tests/unit/test-wip-enforcer.js)
+- [x] T022 [P] Unit test: WIPEnforcer.canMoveToInProgress() returns false if count >= limit (tests/unit/test-wip-enforcer.js)
+- [x] T023 Unit test: WIPEnforcer.getWIPStatus() returns count and limit (tests/unit/test-wip-enforcer.js)
+- [x] T024 Implement WIPEnforcer service in src/services/wip-enforcer.js:
   - canMoveToInProgress(board): Check if in_progress count < wipLimit
   - getWIPStatus(board): Return {count, limit, available: bool}
   - validateWIPLimit(newLimit, currentCount): Ensure limit > 0 and >= current count
 
 ### Category Detection Layer (Blocking for US4)
 
-- [ ] T025 [P] Unit test: CategoryDetector.detect("Fix bug in auth") returns "bug" (tests/unit/test-category-detector.js)
-- [ ] T026 [P] Unit test: CategoryDetector.detect() case-insensitive matching (tests/unit/test-category-detector.js)
-- [ ] T027 Unit test: CategoryDetector.detect() returns "Other" for unmatched titles (tests/unit/test-category-detector.js)
-- [ ] T028 Implement CategoryDetector service in src/services/category-detector.js:
+- [x] T025 [P] Unit test: CategoryDetector.detect("Fix bug in auth") returns "bug" (tests/unit/test-category-detector.js)
+- [x] T026 [P] Unit test: CategoryDetector.detect() case-insensitive matching (tests/unit/test-category-detector.js)
+- [x] T027 Unit test: CategoryDetector.detect() returns "Other" for unmatched titles (tests/unit/test-category-detector.js)
+- [x] T028 Implement CategoryDetector service in src/services/category-detector.js:
   - Keyword patterns: "bug", "fix", "feature", "docs", "refactor", "design", "test", "performance"
   - detect(title): Return matched category or "Other"
   - Case-insensitive matching
@@ -96,7 +96,7 @@ description: "Task list for Kanban TODO Board with WIP Limits feature"
 
 ### App Configuration
 
-- [ ] T029 Create src/config.js with constants:
+- [x] T029 Create src/config.js with constants:
   - WIP_LIMIT_DEFAULT = 3
   - STORAGE_KEY = "kanban-board-v1"
   - STORAGE_VERSION = "1.0.0"
@@ -105,15 +105,15 @@ description: "Task list for Kanban TODO Board with WIP Limits feature"
 
 ### Application Initialization
 
-- [ ] T030 Integration test: Full app startup loads state from storage and initializes (tests/integration/test-persistence.js)
-- [ ] T031 Implement src/index.js:
+- [x] T030 Integration test: Full app startup loads state from storage and initializes (tests/integration/test-persistence.js)
+- [x] T031 Implement src/index.js:
   - Load Storage service
   - Load TodoManager service
   - Load board state on startup
   - Setup event listeners for user story components
   - Initialize kanban-board Web Component with data
 
-**Checkpoint**: Foundation complete - all tests passing, app can load/save state
+**Checkpoint**: Foundation complete - all tests passing, app can load/save state ✅ COMPLETE
 
 ---
 
