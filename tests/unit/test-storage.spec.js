@@ -78,8 +78,18 @@ describe('Storage Service', () => {
     });
 
     it('should overwrite existing state', () => {
-      const initialState = { todos: [], wipLimit: 3, categories: {}, columns: { backlog: [], in_progress: [], done: [] } };
-      const newState = { todos: [{ id: '1' }], wipLimit: 5, categories: {}, columns: { backlog: ['1'], in_progress: [], done: [] } };
+      const initialState = {
+        todos: [],
+        wipLimit: 3,
+        categories: {},
+        columns: { backlog: [], in_progress: [], done: [] },
+      };
+      const newState = {
+        todos: [{ id: '1' }],
+        wipLimit: 5,
+        categories: {},
+        columns: { backlog: ['1'], in_progress: [], done: [] },
+      };
 
       const storage = new Storage();
       storage.save(initialState);

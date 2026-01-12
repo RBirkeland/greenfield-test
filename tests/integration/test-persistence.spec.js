@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { TodoManager } from '../../src/services/todo-manager.js';
-import { Storage } from '../../src/services/storage.js';
 import { STORAGE_KEY, DEFAULT_BOARD_STATE } from '../../src/config.js';
 
 describe('App Persistence - Full Integration', () => {
@@ -49,7 +48,7 @@ describe('App Persistence - Full Integration', () => {
     // Second manager: should see the moved todo
     const manager2 = new TodoManager();
     const board2 = manager2.getBoard();
-    const movedTodo = board2.todos.find(t => t.id === todoId);
+    const movedTodo = board2.todos.find((t) => t.id === todoId);
     expect(movedTodo.status).toBe('in_progress');
   });
 
@@ -58,7 +57,7 @@ describe('App Persistence - Full Integration', () => {
 
     // Add todo
     manager.addTodo('Test', 'Desc');
-    let stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
     expect(stored.todos.length).toBeGreaterThan(0);
 
     // Verify the todo is in storage

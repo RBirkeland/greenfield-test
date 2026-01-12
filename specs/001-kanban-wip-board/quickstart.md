@@ -44,35 +44,37 @@ npm install --save-dev \
 ### 3. Create Entry Point
 
 **`src/index.html`**:
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kanban TODO Board</title>
-  <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/theme.css">
-  <link rel="stylesheet" href="styles/animations.css">
-</head>
-<body>
-  <kanban-board></kanban-board>
-  <script type="module" src="index.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kanban TODO Board</title>
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/theme.css" />
+    <link rel="stylesheet" href="styles/animations.css" />
+  </head>
+  <body>
+    <kanban-board></kanban-board>
+    <script type="module" src="index.js"></script>
+  </body>
 </html>
 ```
 
 **`src/index.js`**:
+
 ```javascript
-import KanbanBoard from "./components/kanban-board.js";
-import TodoManager from "./services/todo-manager.js";
-import Storage from "./services/storage.js";
+import KanbanBoard from './components/kanban-board.js';
+import TodoManager from './services/todo-manager.js';
+import Storage from './services/storage.js';
 
 // Register Web Components
-customElements.define("kanban-board", KanbanBoard);
+customElements.define('kanban-board', KanbanBoard);
 
 // Initialize app
-const board = document.querySelector("kanban-board");
+const board = document.querySelector('kanban-board');
 const storage = new Storage();
 const todoManager = new TodoManager(storage);
 
@@ -81,17 +83,17 @@ const boardState = storage.load();
 board.data = boardState;
 
 // Setup event listeners
-board.addEventListener("todo-added", (e) => {
+board.addEventListener('todo-added', (e) => {
   todoManager.addTodo(e.detail.title, e.detail.description);
   board.data = storage.load();
 });
 
-board.addEventListener("todo-moved", (e) => {
+board.addEventListener('todo-moved', (e) => {
   todoManager.moveTodo(e.detail.todo.id, e.detail.toStatus);
   board.data = storage.load();
 });
 
-board.addEventListener("todo-deleted", (e) => {
+board.addEventListener('todo-deleted', (e) => {
   todoManager.deleteTodo(e.detail.todoId);
   board.data = storage.load();
 });
@@ -106,12 +108,13 @@ board.addEventListener("todo-deleted", (e) => {
 **Step 1**: Write a failing test for the core business logic
 
 **`tests/unit/test-todo-manager.js`**:
-```javascript
-import { describe, it, beforeEach, expect } from "vitest";
-import TodoManager from "../../src/services/todo-manager.js";
-import Storage from "../../src/services/storage.js";
 
-describe("TodoManager", () => {
+```javascript
+import { describe, it, beforeEach, expect } from 'vitest';
+import TodoManager from '../../src/services/todo-manager.js';
+import Storage from '../../src/services/storage.js';
+
+describe('TodoManager', () => {
   let todoManager;
   let storage;
 
@@ -119,56 +122,59 @@ describe("TodoManager", () => {
     // Mock storage for unit tests
     storage = {
       board: {
-        version: "1.0.0",
+        version: '1.0.0',
         todos: [],
         wipLimit: 3,
         categories: {},
-        lastModified: new Date().toISOString()
+        lastModified: new Date().toISOString(),
       },
-      load: function() { return this.board; },
-      save: function(board) { this.board = board; }
+      load: function () {
+        return this.board;
+      },
+      save: function (board) {
+        this.board = board;
+      },
     };
     todoManager = new TodoManager(storage);
   });
 
-  it("should create a TODO with default properties", () => {
-    const todo = todoManager.addTodo("Fix login bug", "Users can't reset password");
+  it('should create a TODO with default properties', () => {
+    const todo = todoManager.addTodo('Fix login bug', "Users can't reset password");
 
     expect(todo.id).toBeDefined();
-    expect(todo.title).toBe("Fix login bug");
-    expect(todo.status).toBe("backlog");
+    expect(todo.title).toBe('Fix login bug');
+    expect(todo.status).toBe('backlog');
     expect(todo.category).toBeNull();
     expect(todo.position).toBe(0);
     expect(todo.completedAt).toBeNull();
   });
 
-  it("should reject empty TODO title", () => {
-    expect(() => todoManager.addTodo("")).toThrow();
-    expect(() => todoManager.addTodo("   ")).toThrow();
+  it('should reject empty TODO title', () => {
+    expect(() => todoManager.addTodo('')).toThrow();
+    expect(() => todoManager.addTodo('   ')).toThrow();
   });
 
-  it("should block move to in_progress if WIP limit reached", () => {
+  it('should block move to in_progress if WIP limit reached', () => {
     // Setup: Add 3 TODOs to in_progress
     for (let i = 0; i < 3; i++) {
       const todo = todoManager.addTodo(`Task ${i}`);
-      todoManager.moveTodo(todo.id, "in_progress");
+      todoManager.moveTodo(todo.id, 'in_progress');
     }
 
     // Add a new TODO to backlog
-    const newTodo = todoManager.addTodo("New task");
+    const newTodo = todoManager.addTodo('New task');
 
     // Try to move it to in_progress (should fail)
-    expect(() => todoManager.moveTodo(newTodo.id, "in_progress"))
-      .toThrow("WIP limit reached");
+    expect(() => todoManager.moveTodo(newTodo.id, 'in_progress')).toThrow('WIP limit reached');
   });
 
-  it("should detect category when moving to done", () => {
-    const todo = todoManager.addTodo("Fix bug in auth system");
-    todoManager.moveTodo(todo.id, "done");
+  it('should detect category when moving to done', () => {
+    const todo = todoManager.addTodo('Fix bug in auth system');
+    todoManager.moveTodo(todo.id, 'done');
 
     const board = storage.load();
-    const completedTodo = board.todos.find(t => t.id === todo.id);
-    expect(completedTodo.category).toBe("bug");
+    const completedTodo = board.todos.find((t) => t.id === todo.id);
+    expect(completedTodo.category).toBe('bug');
   });
 });
 ```
@@ -183,9 +189,10 @@ npm test
 ### Step 3: Implement to make test pass
 
 **`src/services/todo-manager.js`**:
+
 ```javascript
-import { v4 as uuid } from "uuid"; // Or implement simple UUID generator
-import CategoryDetector from "./category-detector.js";
+import { v4 as uuid } from 'uuid'; // Or implement simple UUID generator
+import CategoryDetector from './category-detector.js';
 
 class TodoManager {
   constructor(storage) {
@@ -194,20 +201,20 @@ class TodoManager {
   }
 
   addTodo(title, description = null) {
-    if (!title || title.trim() === "") {
-      throw new Error("Title cannot be empty");
+    if (!title || title.trim() === '') {
+      throw new Error('Title cannot be empty');
     }
 
     const todo = {
       id: uuid(),
       title: title.trim(),
       description: description?.trim() || null,
-      status: "backlog",
+      status: 'backlog',
       category: null,
       position: 0,
       createdAt: new Date().toISOString(),
       completedAt: null,
-      tags: []
+      tags: [],
     };
 
     const board = this.storage.load();
@@ -218,18 +225,18 @@ class TodoManager {
 
   moveTodo(todoId, newStatus) {
     const board = this.storage.load();
-    const todo = board.todos.find(t => t.id === todoId);
+    const todo = board.todos.find((t) => t.id === todoId);
 
-    if (!todo) throw new Error("TODO not found");
-    if (!["backlog", "in_progress", "done"].includes(newStatus)) {
-      throw new Error("Invalid status");
+    if (!todo) throw new Error('TODO not found');
+    if (!['backlog', 'in_progress', 'done'].includes(newStatus)) {
+      throw new Error('Invalid status');
     }
 
     // Check WIP limit
-    if (newStatus === "in_progress") {
-      const inProgressCount = board.todos.filter(t => t.status === "in_progress").length;
+    if (newStatus === 'in_progress') {
+      const inProgressCount = board.todos.filter((t) => t.status === 'in_progress').length;
       if (inProgressCount >= board.wipLimit) {
-        throw new Error("WIP limit reached");
+        throw new Error('WIP limit reached');
       }
     }
 
@@ -238,7 +245,7 @@ class TodoManager {
     todo.position = 0; // Move to top of new column
 
     // If moving to done, detect category and set completedAt
-    if (newStatus === "done") {
+    if (newStatus === 'done') {
       todo.completedAt = new Date().toISOString();
       todo.category = this.categoryDetector.detect(todo.title);
     }
@@ -297,11 +304,12 @@ http://localhost:8080
 ### Create E2E Test
 
 **`tests/e2e/test-user-workflow.js`**:
-```javascript
-import { test, expect } from "@playwright/test";
 
-test("User can add and move TODOs with WIP enforcement", async ({ page }) => {
-  await page.goto("http://localhost:8080");
+```javascript
+import { test, expect } from '@playwright/test';
+
+test('User can add and move TODOs with WIP enforcement', async ({ page }) => {
+  await page.goto('http://localhost:8080');
 
   // Add 3 TODOs
   for (let i = 1; i <= 3; i++) {

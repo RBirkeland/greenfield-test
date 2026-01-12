@@ -8,7 +8,7 @@ export class WIPEnforcer {
    * @returns {boolean} True if move is allowed
    */
   canMoveToInProgress(board) {
-    const inProgressCount = board.todos.filter(t => t.status === 'in_progress').length;
+    const inProgressCount = board.todos.filter((t) => t.status === 'in_progress').length;
     return inProgressCount < board.wipLimit;
   }
 
@@ -18,7 +18,7 @@ export class WIPEnforcer {
    * @returns {Object} { count, limit, available }
    */
   getWIPStatus(board) {
-    const inProgressCount = board.todos.filter(t => t.status === 'in_progress').length;
+    const inProgressCount = board.todos.filter((t) => t.status === 'in_progress').length;
     return {
       count: inProgressCount,
       limit: board.wipLimit,

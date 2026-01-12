@@ -24,6 +24,7 @@ Represents a single work item in the kanban board.
 ```
 
 **Validation Rules**:
+
 - `id`: Must be UUID v4 format
 - `title`: Minimum 1 character; maximum 255 characters; no leading/trailing whitespace
 - `status`: Must be one of three valid statuses
@@ -32,6 +33,7 @@ Represents a single work item in the kanban board.
 - `category`: Auto-detected from title during completion; user-assignable
 
 **State Transitions**:
+
 ```
 backlog → in_progress → done
   ↑           ↓
@@ -64,6 +66,7 @@ Represents the application's persistent state (all TODOs + configuration).
 ```
 
 **Example Full State**:
+
 ```javascript
 {
   version: "1.0.0",
@@ -110,23 +113,24 @@ Represents the application's persistent state (all TODOs + configuration).
 
 ## Relationships & Constraints
 
-| Relationship | Details |
-|---|---|
-| Board → TODOs | One-to-many: Board contains multiple TODOs |
-| TODO → Category | Many-to-one: Multiple TODOs share one category |
-| Status → Position | TODOs ordered within each status column independently |
-| WIP Limit → In Progress | Hard constraint: In Progress column ≤ wipLimit TODOs |
+| Relationship            | Details                                               |
+| ----------------------- | ----------------------------------------------------- |
+| Board → TODOs           | One-to-many: Board contains multiple TODOs            |
+| TODO → Category         | Many-to-one: Multiple TODOs share one category        |
+| Status → Position       | TODOs ordered within each status column independently |
+| WIP Limit → In Progress | Hard constraint: In Progress column ≤ wipLimit TODOs  |
 
 ## Storage Format
 
 ### LocalStorage Key
 
 ```javascript
-localStorage.key = "kanban-board-v1"
-localStorage.value = JSON.stringify(BoardState)
+localStorage.key = 'kanban-board-v1';
+localStorage.value = JSON.stringify(BoardState);
 ```
 
 **Persistence Guarantees**:
+
 - Automatic save after every state mutation (add, move, complete, delete)
 - Version key enables schema migrations (e.g., `kanban-v1` → `kanban-v2`)
 - Recovery: If corrupted, user can reset to empty board
@@ -135,10 +139,10 @@ localStorage.value = JSON.stringify(BoardState)
 
 ```javascript
 // Save (automatic on every change)
-localStorage.setItem("kanban-board-v1", JSON.stringify(boardState));
+localStorage.setItem('kanban-board-v1', JSON.stringify(boardState));
 
 // Load (on app startup)
-const boardState = JSON.parse(localStorage.getItem("kanban-board-v1") || '{}');
+const boardState = JSON.parse(localStorage.getItem('kanban-board-v1') || '{}');
 ```
 
 ## Computed Properties (Not Stored)
@@ -151,10 +155,10 @@ These are derived from TODO array; not persisted to reduce redundancy:
 
 ```javascript
 // Examples (computed on-demand in services)
-const backlogCount = todos.filter(t => t.status === "backlog").length;
-const inProgressCount = todos.filter(t => t.status === "in_progress").length;
+const backlogCount = todos.filter((t) => t.status === 'backlog').length;
+const inProgressCount = todos.filter((t) => t.status === 'in_progress').length;
 const wipAvailable = inProgressCount < wipLimit;
-const bugTodos = todos.filter(t => t.category === "bug");
+const bugTodos = todos.filter((t) => t.category === 'bug');
 ```
 
 ## Migration Path (Future)
@@ -188,15 +192,15 @@ function migrateV1toV2(stateV1) {
 
 ## Edge Cases & Handling
 
-| Edge Case | Handling |
-|---|---|
-| Empty board on startup | Initialize with empty `todos` array and default `wipLimit: 3` |
-| Corrupted LocalStorage | Catch JSON parse error; reset to empty state with user notification |
-| Very long TODO title | Truncate display to 50 chars in UI; store full text; show full on hover |
-| Category detection fails | Assign to "Other" category; user can manually update |
-| Duplicate TODO titles | Allowed (no uniqueness constraint on title, only ID) |
-| Delete from Done | Permanently removes TODO (recoverable only via browser DevTools if needed) |
-| Move multiple TODOs rapidly | Debounce persistence; queue operations in-memory before saving |
+| Edge Case                   | Handling                                                                   |
+| --------------------------- | -------------------------------------------------------------------------- |
+| Empty board on startup      | Initialize with empty `todos` array and default `wipLimit: 3`              |
+| Corrupted LocalStorage      | Catch JSON parse error; reset to empty state with user notification        |
+| Very long TODO title        | Truncate display to 50 chars in UI; store full text; show full on hover    |
+| Category detection fails    | Assign to "Other" category; user can manually update                       |
+| Duplicate TODO titles       | Allowed (no uniqueness constraint on title, only ID)                       |
+| Delete from Done            | Permanently removes TODO (recoverable only via browser DevTools if needed) |
+| Move multiple TODOs rapidly | Debounce persistence; queue operations in-memory before saving             |
 
 ---
 
