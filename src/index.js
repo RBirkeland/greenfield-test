@@ -12,7 +12,38 @@ import { WIPEnforcer } from './services/wip-enforcer.js';
  */
 function initializeApp() {
   // Initialize services
-  const storage = new Storage();
+function initializeApp() {
+  // Initialize services
+  const todoManager = new TodoManager();
+  const wipEnforcer = new WIPEnforcer();
+
+  // Load initial board state
+  const boardState = todoManager.getBoard();
+
+  // Log initialization
+  console.log('Application initialized', {
+    todosCount: boardState.todos.length,
+    wipLimit: boardState.wipLimit,
+    version: todoManager.storage.getVersion(),
+  });
+
+  // Expose services globally for debugging (optional)
+  if (window.__DEBUG__) {
+    window.app = {
+      todoManager,
+      storage: todoManager.storage,
+      wipEnforcer,
+      boardState,
+    };
+  }
+
+  return {
+    todoManager,
+    storage: todoManager.storage,
+    wipEnforcer,
+    boardState,
+  };
+}
   const todoManager = new TodoManager();
   const wipEnforcer = new WIPEnforcer();
 
