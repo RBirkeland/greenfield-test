@@ -5,13 +5,13 @@
 **Status**: Draft
 **Input**: User description: "I want a simple TODO app allowing the user to structure their TODOs in a kanban board. It should be focusing on keeping the WIP restrictired to allow the user to focus on a few things at a time. The visual aspects should also visualise this concept, making it clear the the input part can be large but prioritised and the ongoing topics are small and focused. The done topics should be sorted into categories to be a knowledge base on what has be done but easily found back to specific TODOs based on topics later."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 <!--
   IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
   Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
   you should still have a viable MVP (Minimum Viable Product) that delivers value.
-  
+
   Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
   Think of each story as a standalone slice of functionality that can be:
   - Developed independently
@@ -94,7 +94,7 @@ A user completes a task and moves it to Done. Rather than being a flat list, Don
 - How are TODOs persisted if the browser is closed or refreshed mid-session?
 - What happens if a user has no TODOs in any column (completely empty board)?
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 <!--
   ACTION REQUIRED: The content in this section represents placeholders.
@@ -122,7 +122,7 @@ A user completes a task and moves it to Done. Rather than being a flat list, Don
 - **Category/Topic**: A grouping label for organizing completed TODOs in the Done section (inferred from content or user-assigned)
 - **Board State**: The current arrangement of all TODOs across columns, including WIP counts and user preferences
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 <!--
   ACTION REQUIRED: Define measurable success criteria.

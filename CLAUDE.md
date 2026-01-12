@@ -63,6 +63,7 @@ Every feature follows this workflow:
 ## Installed Plugins & Tools
 
 ### Plugins
+
 - **commit-commands**: Git workflow automation (use `/commit` skill for atomic commits)
 - **context7**: Library documentation lookup (use before implementing third-party integrations)
 - **frontend-design**: Web component and UI design creation (use for polished component styling/layout)
@@ -70,6 +71,7 @@ Every feature follows this workflow:
 - **playwright**: Browser automation for E2E testing (required for user story validation)
 
 ### MCPs
+
 - **vibe_kanban**: Project task and kanban board management
   - Create and track tasks from tasks.md
   - Single source of truth for work in progress
@@ -80,51 +82,65 @@ Every feature follows this workflow:
 ## Development Workflow Guidance
 
 ### Feature Specification (speckit tools)
+
 Use the speckit toolkit to plan features before implementation:
+
 - `/speckit.specify` - Create feature specification with requirements
 - `/speckit.clarify` - Identify and resolve ambiguities in spec
 - `/speckit.plan` - Design implementation approach and architecture
 - `/speckit.tasks` - Generate tasks.md with all work items (must run before vibe_kanban sync)
 
 ### Task Management (vibe_kanban)
+
 - Create kanban tasks from tasks.md using vibe_kanban MCP
 - Use vibe_kanban as single source of truth for work tracking
 - Update task status as implementation progresses
 - Each user story should be independently trackable
 
 ### Git Workflow (Feature Branches)
+
 - Create branch per feature: `git checkout -b [feature-name]`
 - Work on feature branch exclusively
 - Use `/commit` skill for atomic, well-described commits
 - Example: `git checkout -b 001-kanban-wip-board`
 
 ### Validation Requirements
+
 Before creating a PR, all validations must pass:
+
 - **Unit & Integration Tests**: `npm test`
 - **Code Quality**: `npm run lint` (ESLint + Prettier formatting)
 - **E2E Tests**: `npm run test:e2e` (verify user stories work independently)
 
 ### TypeScript LSP (As-Needed Validation)
+
 Use when working on complex or critical code:
+
 - Business logic validation (TodoManager, WIPEnforcer, CategoryDetector)
 - Refactoring critical services
 - Optional for simple UI components
 
 ### Playwright (Required for User Stories)
+
 Each user story (US1-US4) must have E2E tests:
+
 - Tests verify story acceptance criteria from tasks.md
 - Tests validate independent user workflows
 - Example: US1 tests user can add/reorder/persist TODOs
 - Run via: `npm run test:e2e`
 
 ### context7 Plugin (External Library Research)
+
 Before implementing third-party integrations:
+
 - Look up Vitest, Playwright documentation
 - Research Web Components best practices
 - Document external library decisions in task notes
 
 ### frontend-design Plugin (UI Component Creation)
+
 Use when building web components:
+
 - Create components with polished output
 - Apply consistent theme and styling guidance
 - Ensure responsive layouts and visual hierarchy

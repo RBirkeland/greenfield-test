@@ -1,6 +1,5 @@
 import { generateId } from '../utils/uuid.js';
 import { Storage } from './storage.js';
-import { DEFAULT_BOARD_STATE, WIP_LIMIT_DEFAULT } from '../config.js';
 import { validateTitle, validateDescription } from '../utils/validators.js';
 import { CategoryDetector } from './category-detector.js';
 
@@ -8,6 +7,8 @@ import { CategoryDetector } from './category-detector.js';
  * TodoManager - Core business logic for managing TODOs and board state
  */
 export class TodoManager {
+  static VALID_STATUSES = ['backlog', 'in_progress', 'paused', 'done'];
+
   constructor() {
     this.storage = new Storage();
     this.board = this.storage.load();
@@ -32,7 +33,7 @@ export class TodoManager {
       throw new Error(descValidation.error);
     }
 
-    const backlogTodos = this.board.todos.filter(t => t.status === 'backlog');
+    const backlogTodos = this.board.todos.filter((t) => t.status === 'backlog');
     const newPosition = backlogTodos.length;
 
     const newTodo = {
@@ -64,14 +65,12 @@ export class TodoManager {
    * @param {string} newStatus - New status (backlog, in_progress, paused, done)
    * @throws {Error} If move violates WIP limit
    */
-  const VALID_STATUSES = ['backlog', 'in_progress', 'paused', 'done'];
-
   moveTodo(todoId, newStatus) {
-    if (!VALID_STATUSES.includes(newStatus)) {
+    if (!TodoManager.VALID_STATUSES.includes(newStatus)) {
       throw new Error(`Invalid status: ${newStatus}`);
     }
 
-    const todo = this.board.todos.find(t => t.id === todoId);
+    const todo = this.board.todos.find((t) => t.id === todoId);
     if (!todo) {
       throw new Error(`TODO not found: ${todoId}`);
     }
@@ -87,20 +86,22 @@ export class TodoManager {
     todo.status = newStatus;
 
     // Recompute positions in old column (excluding the moved todo)
-    const oldColumnTodos = this.board.todos.filter(t => t.status === oldStatus && t.id !== todoId);
+    const oldColumnTodos = this.board.todos.filter(
+      (t) => t.status === oldStatus && t.id !== todoId
+    );
     oldColumnTodos.forEach((t, idx) => {
       t.position = idx;
     });
 
     // Recompute positions in new column
-    const newColumnTodos = this.board.todos.filter(t => t.status === newStatus);
+    const newColumnTodos = this.board.todos.filter((t) => t.status === newStatus);
     newColumnTodos.forEach((t, idx) => {
       t.position = idx;
     });
 
     // Update columns
-    this.board.columns[oldStatus] = oldColumnTodos.map(t => t.id);
-    this.board.columns[newStatus] = newColumnTodos.map(t => t.id);
+    this.board.columns[oldStatus] = oldColumnTodos.map((t) => t.id);
+    this.board.columns[newStatus] = newColumnTodos.map((t) => t.id);
 
     this._save();
   }
@@ -110,7 +111,7 @@ export class TodoManager {
    * @param {string} todoId - TODO ID
    */
   deleteTodo(todoId) {
-    const todoIndex = this.board.todos.findIndex(t => t.id === todoId);
+    const todoIndex = this.board.todos.findIndex((t) => t.id === todoId);
     if (todoIndex === -1) {
       throw new Error(`TODO not found: ${todoId}`);
     }
@@ -119,11 +120,11 @@ export class TodoManager {
     this.board.todos.splice(todoIndex, 1);
 
     // Remove from column
-    const columnTodos = this.board.todos.filter(t => t.status === todo.status);
+    const columnTodos = this.board.todos.filter((t) => t.status === todo.status);
     columnTodos.forEach((t, idx) => {
       t.position = idx;
     });
-    this.board.columns[todo.status] = columnTodos.map(t => t.id);
+    this.board.columns[todo.status] = columnTodos.map((t) => t.id);
 
     this._save();
   }
@@ -134,13 +135,13 @@ export class TodoManager {
    * @param {number} newPosition - New position in column
    */
   reorderTodo(todoId, newPosition) {
-    const todo = this.board.todos.find(t => t.id === todoId);
+    const todo = this.board.todos.find((t) => t.id === todoId);
     if (!todo) {
       throw new Error(`TODO not found: ${todoId}`);
     }
 
-    const columnTodos = this.board.todos.filter(t => t.status === todo.status);
-    const currentIndex = columnTodos.findIndex(t => t.id === todoId);
+    const columnTodos = this.board.todos.filter((t) => t.status === todo.status);
+    const currentIndex = columnTodos.findIndex((t) => t.id === todoId);
 
     if (currentIndex === -1 || newPosition < 0 || newPosition >= columnTodos.length) {
       throw new Error('Invalid reorder operation');
@@ -158,10 +159,10 @@ export class TodoManager {
     });
 
     // Reorder board.todos to match new column order
-    const otherTodos = this.board.todos.filter(t => t.status !== todo.status);
+    const otherTodos = this.board.todos.filter((t) => t.status !== todo.status);
     this.board.todos = [...columnTodos, ...otherTodos];
 
-    this.board.columns[todo.status] = columnTodos.map(t => t.id);
+    this.board.columns[todo.status] = columnTodos.map((t) => t.id);
 
     this._save();
   }
@@ -176,9 +177,11 @@ export class TodoManager {
       throw new Error('WIP limit must be a positive integer');
     }
 
-    const inProgressCount = this.board.todos.filter(t => t.status === 'in_progress').length;
+    const inProgressCount = this.board.todos.filter((t) => t.status === 'in_progress').length;
     if (newLimit < inProgressCount) {
-      throw new Error(`WIP limit cannot be less than current in-progress count (${inProgressCount})`);
+      throw new Error(
+        `WIP limit cannot be less than current in-progress count (${inProgressCount})`
+      );
     }
 
     this.board.wipLimit = newLimit;
@@ -191,10 +194,10 @@ export class TodoManager {
    * @returns {Array} Matching TODOs
    */
   searchDone(query) {
-    const doneTodos = this.board.todos.filter(t => t.status === 'done');
+    const doneTodos = this.board.todos.filter((t) => t.status === 'done');
     const lowerQuery = query.toLowerCase();
 
-    return doneTodos.filter(todo => {
+    return doneTodos.filter((todo) => {
       const titleMatch = todo.title.toLowerCase().includes(lowerQuery);
       const descMatch = todo.description && todo.description.toLowerCase().includes(lowerQuery);
       const categoryMatch = todo.category && todo.category.toLowerCase().includes(lowerQuery);

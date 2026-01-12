@@ -23,28 +23,33 @@ Build a modern, minimal web application that implements a kanban-style TODO boar
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 ✅ **I. Test-First Development (NON-NEGOTIABLE)**
+
 - PASS: All features will have tests written before implementation using red-green-refactor cycle
 - Test structure: `tests/unit/`, `tests/integration/`, `tests/e2e/`
 - Testing tools: Vitest for unit/integration; Playwright for E2E user workflows
 
 ✅ **II. Simplicity & YAGNI**
+
 - PASS: Vanilla JS (no framework bloat); Web Components instead of custom abstractions
 - Only add libraries when they solve concrete problems (e.g., drag-drop library if needed, not frameworks)
 - Minimal dependencies: ~5-10 packages, all with clear purpose
 
 ✅ **III. Focused Functionality Over Architecture**
+
 - PASS: Single SPA with focused domain (TODO kanban board only)
 - No microservices, no unnecessary patterns, direct DOM manipulation where simple suffices
 - Pragmatic use of Web Components for code organization
 
 ✅ **IV. Clear Error Handling & Observability**
+
 - PASS: Explicit user-facing error messages (e.g., "WIP limit reached—complete a task to add more")
 - Browser console logging for debugging; clear error boundaries for data operations
 
 ✅ **V. Code Review & Compliance**
+
 - PASS: All code changes will be reviewed for constitution compliance before merge
 - Reviewers will verify test-first discipline and complexity justification
 
@@ -134,11 +139,13 @@ MCPs extend Claude Code with specialized capabilities for development support:
 ### Plugins & Build Tools
 
 **Phase 1 (MVP)**: No build tool required
+
 - Serve files via `npx http-server` or Python `http.server`
 - ES modules loaded directly in browser
 - Zero configuration needed
 
 **Phase 2 (if needed)**: Optional tooling
+
 - Vite: Fast dev server and bundle optimization (only if bundle size becomes concern)
 - ESLint: Code linting per constitution principles
 - Prettier: Consistent formatting

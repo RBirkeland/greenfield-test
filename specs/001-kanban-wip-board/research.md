@@ -11,17 +11,20 @@
 **Decision**: Use vanilla ES2020+ JavaScript with native Web Components API. No framework (React, Vue, Angular).
 
 **Rationale**:
+
 - Aligns with TODO App Constitution Principle II (Simplicity & YAGNI) and Principle III (Focused Functionality)
 - Web Components are native browser standard (no transpilation needed)
 - Minimal dependencies = smaller bundle, fewer vulnerabilities, easier maintenance
 - Learning curve for new devs is lower than framework-specific patterns
 
 **Alternatives Considered**:
+
 - React: Would add ~40KB minified; overkill for single TODO feature; more complex build process
 - Vue: Similar overhead; not needed for this single-page app
 - Framework-agnostic approach (plain DOM): Possible but harder to maintain; Web Components provide better encapsulation
 
 **Implementation Approach**:
+
 - Each UI component (Board, Column, Card, Input) is a Web Component extending `HTMLElement`
 - Shadow DOM for style encapsulation (no CSS conflicts)
 - Custom events for inter-component communication (no prop drilling issues)
@@ -32,6 +35,7 @@
 **Decision**: Use browser `localStorage` API for all data persistence. No backend/server.
 
 **Rationale**:
+
 - Feature spec assumes single-user (no multi-user sync needed)
 - LocalStorage sufficient for 1000+ TODOs (typical quota is 5-10MB)
 - Zero infrastructure costs; instant deployment (static files only)
@@ -39,11 +43,13 @@
 - JSON serialization is straightforward
 
 **Alternatives Considered**:
+
 - IndexedDB: More powerful but overkill for this use case; adds complexity
 - Backend API: Unnecessary for P1; can add later if multi-device sync needed
 - Service Worker cache: For offline, but LocalStorage is simpler for structured data
 
 **Implementation Approach**:
+
 - `Storage` service wraps `localStorage` API
 - Automatic JSON serialization/deserialization
 - Version key for schema migrations later (`kanban-v1`, `kanban-v2`, etc.)
@@ -54,17 +60,20 @@
 **Decision**: Vitest for unit/integration tests; Playwright for end-to-end tests.
 
 **Rationale**:
+
 - Vitest: Zero config, fast, ES module support, works with Vanilla JS
 - Playwright: Cross-browser E2E testing (Chrome, Firefox, Safari); captures drag-drop interactions
 - Both are lightweight; no heavy test infrastructure needed
 - Aligns with Constitution Principle I (Test-First Development)
 
 **Alternatives Considered**:
+
 - Jest: Heavier, more oriented toward React/Node; overkill here
 - Cypress: Good for E2E but slower startup; Playwright is faster
 - Pure manual testing: Violates Constitution; tests are mandatory
 
 **Test Structure**:
+
 - **Unit Tests** (`tests/unit/`): Pure function tests (storage, business logic)
 - **Integration Tests** (`tests/integration/`): Component behavior, LocalStorage interactions
 - **E2E Tests** (`tests/e2e/`): User workflows (add→move→complete→search)
@@ -75,11 +84,13 @@
 **Decision**: Use native HTML5 Drag and Drop API initially; consider library if interaction complexity increases.
 
 **Rationale**:
+
 - HTML5 Drag and Drop is built-in (no dependencies)
 - Sufficient for basic reordering within columns
 - Web Component can encapsulate drag listeners
 
 **Alternatives Considered**:
+
 - `SortableJS`: Adds 15KB; overkill if basic drag-drop works
 - `dnd-kit` (React-focused): Not applicable to Vanilla JS
 - Custom mouse events: More work, error-prone
@@ -91,17 +102,20 @@
 **Decision**: Simple keyword/phrase matching on TODO titles. User can manually override category/tag.
 
 **Rationale**:
+
 - No ML needed; pattern matching is fast and deterministic
 - Common phrases: "bug", "fix", "feature", "docs", "refactor", "design", etc.
 - User can add custom categories via tags (P2 feature)
 - Reduces scope while meeting spec requirement ("automatically categorized")
 
 **Alternatives Considered**:
+
 - ML/NLP libraries: Overkill, adds dependency, harder to debug
 - Manual categorization only: Doesn't meet spec
 - Regex-based patterns: Works for MVP; scalable to ML later
 
 **Implementation**:
+
 - `CategoryDetector` service maintains phrase→category mappings
 - Configurable, extensible patterns
 - Tests validate common scenarios ("Fix bug in login" → "bug")

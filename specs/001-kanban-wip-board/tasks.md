@@ -1,6 +1,5 @@
 ---
-
-description: "Task list for Kanban TODO Board with WIP Limits feature"
+description: 'Task list for Kanban TODO Board with WIP Limits feature'
 ---
 
 # Tasks: Kanban TODO Board with WIP Limits
@@ -427,10 +426,12 @@ description: "Task list for Kanban TODO Board with WIP Limits feature"
 ### Parallel Opportunities
 
 **Phase 1 Setup** (after T008):
+
 - T009, T010, T011: Utilities (independent files)
 - T002, T003, T004, T005, T006, T007: Config/setup (independent)
 
 **Phase 2 Foundational** (after T008):
+
 - T009-T011: All utilities in parallel
 - T012-T015: Storage tests + implementation (sequential: tests then impl)
 - T016-T020: TodoManager tests + implementation (sequential)
@@ -438,23 +439,27 @@ description: "Task list for Kanban TODO Board with WIP Limits feature"
 - T025-T028: CategoryDetector tests + implementation (sequential, independent)
 
 **Phase 3 User Story 1** (after Foundational complete):
+
 - T037-T038: Tests for components (parallel)
 - T039-T042: Component implementations (can run parallel - different files)
 - T043-T045: Styling (all parallel - independent CSS files)
 - T046-T049: Integration (sequential - builds on components)
 
 **Phase 4 User Story 2** (after Foundational complete, can run parallel with US1/US3):
+
 - T050-T051: Tests (parallel)
 - T055: TodoManager update (sequential - depends on US1 TodoManager implementation)
 - T056-T057: UI updates (parallel)
 - T059-T060: Integration (sequential)
 
 **Phase 5 User Story 3** (after Foundational complete, can run parallel with US1/US2):
+
 - T061: Tests (single file but quick)
 - T063-T065: Styling (all parallel)
 - T066-T067: UI component updates (sequential - builds on US1 components)
 
 **Phase 6 User Story 4** (after Foundational complete, can run parallel with US1/US2/US3):
+
 - T068-T069: Tests (parallel)
 - T073-T074: Business logic (can be parallel if separate methods)
 - T075-T078: Components & UI (can be parallel)
@@ -562,16 +567,16 @@ With 1-2 developers (sequential):
 
 ## Task Summary
 
-| Phase | Task Count | Purpose |
-|---|---|---|
-| Phase 1: Setup | 8 | Project initialization |
-| Phase 2: Foundational | 23 | Storage, business logic, services (BLOCKING) |
-| Phase 3: User Story 1 | 18 | Capture + Prioritize TODOs (MVP) |
-| Phase 4: User Story 2 | 11 | WIP Limit Enforcement |
-| Phase 5: User Story 3 | 7 | Visual Differentiation |
-| Phase 6: User Story 4 | 14 | Categorization + Search (P2) |
-| Phase N: Polish | 12 | Documentation, optimization, edge cases |
-| **TOTAL** | **93** | Full feature implementation |
+| Phase                 | Task Count | Purpose                                      |
+| --------------------- | ---------- | -------------------------------------------- |
+| Phase 1: Setup        | 8          | Project initialization                       |
+| Phase 2: Foundational | 23         | Storage, business logic, services (BLOCKING) |
+| Phase 3: User Story 1 | 18         | Capture + Prioritize TODOs (MVP)             |
+| Phase 4: User Story 2 | 11         | WIP Limit Enforcement                        |
+| Phase 5: User Story 3 | 7          | Visual Differentiation                       |
+| Phase 6: User Story 4 | 14         | Categorization + Search (P2)                 |
+| Phase N: Polish       | 12         | Documentation, optimization, edge cases      |
+| **TOTAL**             | **93**     | Full feature implementation                  |
 
 ### By User Story
 

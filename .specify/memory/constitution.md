@@ -61,6 +61,7 @@ All code changes require review to verify alignment with the constitution's prin
 ## Governance
 
 This constitution supersedes all other development practices and guidelines. Amendments require:
+
 1. Written justification with rationale
 2. Impact analysis on existing principles
 3. Approval from project stakeholders

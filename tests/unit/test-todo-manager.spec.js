@@ -46,7 +46,7 @@ describe('TodoManager', () => {
     });
 
     it('should auto-save to Storage after adding', () => {
-      const saveSpy = vi.spyOn(Storage.prototype, 'save');
+      vi.spyOn(Storage.prototype, 'save');
       todoManager.addTodo('Test', 'Desc');
       // Storage save will be called via the instance
     });
@@ -84,7 +84,7 @@ describe('TodoManager', () => {
       todoManager.moveTodo(todoId, 'in_progress');
 
       const updatedBoard = todoManager.getBoard();
-      const movedTodo = updatedBoard.todos.find(t => t.id === todoId);
+      const movedTodo = updatedBoard.todos.find((t) => t.id === todoId);
       expect(movedTodo.status).toBe('in_progress');
     });
 
@@ -96,7 +96,7 @@ describe('TodoManager', () => {
       todoManager.moveTodo(todoId, 'paused');
 
       const updatedBoard = todoManager.getBoard();
-      const movedTodo = updatedBoard.todos.find(t => t.id === todoId);
+      const movedTodo = updatedBoard.todos.find((t) => t.id === todoId);
       expect(movedTodo.status).toBe('paused');
     });
 
@@ -110,7 +110,7 @@ describe('TodoManager', () => {
       todoManager.moveTodo(firstId, 'in_progress');
 
       const updatedBoard = todoManager.getBoard();
-      const backlogTodos = updatedBoard.todos.filter(t => t.status === 'backlog');
+      const backlogTodos = updatedBoard.todos.filter((t) => t.status === 'backlog');
       expect(backlogTodos[0].position).toBe(0);
     });
   });
@@ -142,7 +142,7 @@ describe('TodoManager', () => {
       todoManager.reorderTodo(thirdTodoId, 0);
 
       const updatedBoard = todoManager.getBoard();
-      const backlogTodos = updatedBoard.todos.filter(t => t.status === 'backlog');
+      const backlogTodos = updatedBoard.todos.filter((t) => t.status === 'backlog');
       expect(backlogTodos[0].id).toBe(thirdTodoId);
     });
   });

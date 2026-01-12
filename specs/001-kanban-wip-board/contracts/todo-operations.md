@@ -9,6 +9,7 @@
 **Function**: `addTodo(title: string, description?: string): TODO`
 
 **Input**:
+
 ```javascript
 {
   title: string,          // Required, 1-255 chars, non-empty after trim
@@ -17,6 +18,7 @@
 ```
 
 **Output**:
+
 ```javascript
 {
   id: "uuid-string",
@@ -32,22 +34,24 @@
 ```
 
 **Error Cases**:
+
 - `EmptyTitleError`: If title is empty or whitespace-only
 - `TitleTooLongError`: If title exceeds 255 chars
 
 **Test Contract**:
+
 ```javascript
-test("addTodo should create TODO with correct defaults", () => {
-  const result = todoManager.addTodo("Fix bug in auth");
-  assert.equal(result.status, "backlog");
+test('addTodo should create TODO with correct defaults', () => {
+  const result = todoManager.addTodo('Fix bug in auth');
+  assert.equal(result.status, 'backlog');
   assert.equal(result.position, 0);
   assert.isNull(result.category);
   assert.isNull(result.completedAt);
 });
 
-test("addTodo should reject empty title", () => {
-  expect(() => todoManager.addTodo("")).toThrow(EmptyTitleError);
-  expect(() => todoManager.addTodo("   ")).toThrow(EmptyTitleError);
+test('addTodo should reject empty title', () => {
+  expect(() => todoManager.addTodo('')).toThrow(EmptyTitleError);
+  expect(() => todoManager.addTodo('   ')).toThrow(EmptyTitleError);
 });
 ```
 
@@ -58,6 +62,7 @@ test("addTodo should reject empty title", () => {
 **Function**: `moveTodo(todoId: string, newStatus: "backlog" | "in_progress" | "done"): TODO`
 
 **Input**:
+
 ```javascript
 {
   todoId: string,         // UUID of TODO to move
@@ -66,6 +71,7 @@ test("addTodo should reject empty title", () => {
 ```
 
 **Output**:
+
 ```javascript
 {
   ...existingTODO,
@@ -76,24 +82,26 @@ test("addTodo should reject empty title", () => {
 ```
 
 **Error Cases**:
+
 - `TodoNotFoundError`: If todoId doesn't exist
 - `WIPLimitExceededError`: If moving to "in_progress" and WIP limit already reached
 - `InvalidStatusError`: If newStatus is not a valid status
 
 **Side Effects**:
+
 - When moving to "done": Automatically detect and assign category
 - Reorder: Recompute positions in original and target columns
 
 **Test Contract**:
+
 ```javascript
-test("moveTodo should block move to in_progress if WIP limit reached", () => {
+test('moveTodo should block move to in_progress if WIP limit reached', () => {
   // Setup: 3 TODOs already in "in_progress" (at limit of 3)
-  expect(() => todoManager.moveTodo(newTodoId, "in_progress"))
-    .toThrow(WIPLimitExceededError);
+  expect(() => todoManager.moveTodo(newTodoId, 'in_progress')).toThrow(WIPLimitExceededError);
 });
 
-test("moveTodo to done should set completedAt and detect category", () => {
-  const result = todoManager.moveTodo(todoId, "done");
+test('moveTodo to done should set completedAt and detect category', () => {
+  const result = todoManager.moveTodo(todoId, 'done');
   assert.isNotNull(result.completedAt);
   assert.isNotNull(result.category);
 });
@@ -106,36 +114,40 @@ test("moveTodo to done should set completedAt and detect category", () => {
 **Function**: `deleteTodo(todoId: string): void`
 
 **Input**:
+
 ```javascript
 {
-  todoId: string          // UUID of TODO to delete
+  todoId: string; // UUID of TODO to delete
 }
 ```
 
 **Output**:
+
 ```javascript
 // No return value; side effect is deletion from board state
 ```
 
 **Error Cases**:
+
 - `TodoNotFoundError`: If todoId doesn't exist
 
 **Side Effects**:
+
 - Removes TODO from board permanently
 - Recomputes positions in affected column
 
 **Test Contract**:
+
 ```javascript
-test("deleteTodo should remove TODO from board", () => {
+test('deleteTodo should remove TODO from board', () => {
   const initialCount = todoManager.getBoard().todos.length;
   todoManager.deleteTodo(todoId);
   const afterCount = todoManager.getBoard().todos.length;
   assert.equal(afterCount, initialCount - 1);
 });
 
-test("deleteTodo should throw if TODO not found", () => {
-  expect(() => todoManager.deleteTodo("invalid-id"))
-    .toThrow(TodoNotFoundError);
+test('deleteTodo should throw if TODO not found', () => {
+  expect(() => todoManager.deleteTodo('invalid-id')).toThrow(TodoNotFoundError);
 });
 ```
 
@@ -146,6 +158,7 @@ test("deleteTodo should throw if TODO not found", () => {
 **Function**: `reorderTodo(todoId: string, newPosition: number): TODO`
 
 **Input**:
+
 ```javascript
 {
   todoId: string,         // UUID of TODO to move
@@ -154,6 +167,7 @@ test("deleteTodo should throw if TODO not found", () => {
 ```
 
 **Output**:
+
 ```javascript
 {
   ...existingTODO,
@@ -162,19 +176,21 @@ test("deleteTodo should throw if TODO not found", () => {
 ```
 
 **Error Cases**:
+
 - `TodoNotFoundError`: If todoId doesn't exist
 - `InvalidPositionError`: If newPosition is out of bounds
 
 **Test Contract**:
+
 ```javascript
-test("reorderTodo should update position correctly", () => {
+test('reorderTodo should update position correctly', () => {
   // Setup: 5 TODOs in backlog at positions 0-4
   const result = todoManager.reorderTodo(todoId, 2);
   assert.equal(result.position, 2);
 
   // Verify other TODOs shifted correctly
-  const backlog = todoManager.getBoard().todos.filter(t => t.status === "backlog");
-  const positions = backlog.map(t => t.position).sort((a, b) => a - b);
+  const backlog = todoManager.getBoard().todos.filter((t) => t.status === 'backlog');
+  const positions = backlog.map((t) => t.position).sort((a, b) => a - b);
   assert.deepEqual(positions, [0, 1, 2, 3, 4]);
 });
 ```
@@ -188,6 +204,7 @@ test("reorderTodo should update position correctly", () => {
 **Input**: None
 
 **Output**:
+
 ```javascript
 {
   version: "1.0.0",
@@ -201,8 +218,9 @@ test("reorderTodo should update position correctly", () => {
 **Error Cases**: None
 
 **Test Contract**:
+
 ```javascript
-test("getBoard should return current state", () => {
+test('getBoard should return current state', () => {
   const board = todoManager.getBoard();
   assert.isArray(board.todos);
   assert.equal(board.wipLimit, 3);
@@ -217,13 +235,15 @@ test("getBoard should return current state", () => {
 **Function**: `searchDone(query: string): TODO[]`
 
 **Input**:
+
 ```javascript
 {
-  query: string           // Category name or keyword (case-insensitive)
+  query: string; // Category name or keyword (case-insensitive)
 }
 ```
 
 **Output**:
+
 ```javascript
 [
   { ...TODO (status: "done"), ...},
@@ -232,20 +252,22 @@ test("getBoard should return current state", () => {
 ```
 
 **Behavior**:
+
 - Case-insensitive matching on category name or TODO title
 - Returns only TODOs with status = "done"
 - Empty query returns all done TODOs
 
 **Test Contract**:
+
 ```javascript
-test("searchDone should find TODOs by category", () => {
-  const bugTodos = todoManager.searchDone("bug");
-  assert.all(bugTodos, t => t.category === "bug");
+test('searchDone should find TODOs by category', () => {
+  const bugTodos = todoManager.searchDone('bug');
+  assert.all(bugTodos, (t) => t.category === 'bug');
 });
 
-test("searchDone should be case-insensitive", () => {
-  const result1 = todoManager.searchDone("BUG");
-  const result2 = todoManager.searchDone("bug");
+test('searchDone should be case-insensitive', () => {
+  const result1 = todoManager.searchDone('BUG');
+  const result2 = todoManager.searchDone('bug');
   assert.deepEqual(result1, result2);
 });
 ```
@@ -257,31 +279,31 @@ test("searchDone should be case-insensitive", () => {
 **Function**: `setWIPLimit(newLimit: number): void`
 
 **Input**:
+
 ```javascript
 {
-  newLimit: number        // New WIP limit (must be > 0)
+  newLimit: number; // New WIP limit (must be > 0)
 }
 ```
 
 **Output**: None (side effect: updates board state)
 
 **Error Cases**:
+
 - `InvalidWIPLimitError`: If newLimit ≤ 0
 - `WIPLimitTooLowError`: If newLimit < current in-progress count
 
 **Test Contract**:
+
 ```javascript
-test("setWIPLimit should validate positive number", () => {
-  expect(() => todoManager.setWIPLimit(0))
-    .toThrow(InvalidWIPLimitError);
-  expect(() => todoManager.setWIPLimit(-1))
-    .toThrow(InvalidWIPLimitError);
+test('setWIPLimit should validate positive number', () => {
+  expect(() => todoManager.setWIPLimit(0)).toThrow(InvalidWIPLimitError);
+  expect(() => todoManager.setWIPLimit(-1)).toThrow(InvalidWIPLimitError);
 });
 
-test("setWIPLimit should prevent lowering limit below current count", () => {
+test('setWIPLimit should prevent lowering limit below current count', () => {
   // Setup: 3 TODOs in "in_progress"
-  expect(() => todoManager.setWIPLimit(2))
-    .toThrow(WIPLimitTooLowError);
+  expect(() => todoManager.setWIPLimit(2)).toThrow(WIPLimitTooLowError);
 });
 ```
 
@@ -289,15 +311,15 @@ test("setWIPLimit should prevent lowering limit below current count", () => {
 
 ## Summary of Contracts
 
-| Operation | Input | Output | Key Validation |
-|---|---|---|---|
-| addTodo | title, description? | TODO | Non-empty title, max lengths |
-| moveTodo | todoId, newStatus | TODO | WIP limit enforcement, valid status |
-| deleteTodo | todoId | void | TODO exists |
-| reorderTodo | todoId, newPosition | TODO | Position in bounds |
-| getBoard | (none) | BoardState | (none) |
-| searchDone | query | TODO[] | Case-insensitive match |
-| setWIPLimit | newLimit | void | Limit > 0, >= current count |
+| Operation   | Input               | Output     | Key Validation                      |
+| ----------- | ------------------- | ---------- | ----------------------------------- |
+| addTodo     | title, description? | TODO       | Non-empty title, max lengths        |
+| moveTodo    | todoId, newStatus   | TODO       | WIP limit enforcement, valid status |
+| deleteTodo  | todoId              | void       | TODO exists                         |
+| reorderTodo | todoId, newPosition | TODO       | Position in bounds                  |
+| getBoard    | (none)              | BoardState | (none)                              |
+| searchDone  | query               | TODO[]     | Case-insensitive match              |
+| setWIPLimit | newLimit            | void       | Limit > 0, >= current count         |
 
 ---
 
