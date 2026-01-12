@@ -88,6 +88,18 @@ describe('TodoManager', () => {
       expect(movedTodo.status).toBe('in_progress');
     });
 
+    it('should move TODO to paused status', () => {
+      todoManager.addTodo('Test', 'Desc');
+      const board = todoManager.getBoard();
+      const todoId = board.todos[0].id;
+
+      todoManager.moveTodo(todoId, 'paused');
+
+      const updatedBoard = todoManager.getBoard();
+      const movedTodo = updatedBoard.todos.find(t => t.id === todoId);
+      expect(movedTodo.status).toBe('paused');
+    });
+
     it('should recompute positions after move', () => {
       todoManager.addTodo('First', 'Desc');
       todoManager.addTodo('Second', 'Desc');

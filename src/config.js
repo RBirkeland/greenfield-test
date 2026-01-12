@@ -16,6 +16,7 @@ export const DEFAULT_BOARD_STATE = {
   columns: {
     backlog: [],
     in_progress: [],
+    paused: [],
     done: [],
   },
 };
