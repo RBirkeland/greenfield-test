@@ -64,7 +64,13 @@ export class TodoManager {
    * @param {string} newStatus - New status (backlog, in_progress, done)
    * @throws {Error} If move violates WIP limit
    */
+  const VALID_STATUSES = ['backlog', 'in_progress', 'done'];
+
   moveTodo(todoId, newStatus) {
+    if (!VALID_STATUSES.includes(newStatus)) {
+      throw new Error(`Invalid status: ${newStatus}`);
+    }
+
     const todo = this.board.todos.find(t => t.id === todoId);
     if (!todo) {
       throw new Error(`TODO not found: ${todoId}`);
