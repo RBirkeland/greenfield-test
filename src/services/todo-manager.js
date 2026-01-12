@@ -61,10 +61,10 @@ export class TodoManager {
   /**
    * Move a TODO to a different status
    * @param {string} todoId - TODO ID
-   * @param {string} newStatus - New status (backlog, in_progress, done)
+   * @param {string} newStatus - New status (backlog, in_progress, paused, done)
    * @throws {Error} If move violates WIP limit
    */
-  const VALID_STATUSES = ['backlog', 'in_progress', 'done'];
+  const VALID_STATUSES = ['backlog', 'in_progress', 'paused', 'done'];
 
   moveTodo(todoId, newStatus) {
     if (!VALID_STATUSES.includes(newStatus)) {
